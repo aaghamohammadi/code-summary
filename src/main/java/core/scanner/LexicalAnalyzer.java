@@ -21,10 +21,10 @@ public class LexicalAnalyzer {
 
                 if (matcher.group(t.name()) != null) {
                     if (matcher.group(Type.KEYWORDS.name()) != null) {
-                        System.out.println(matcher.group(t.name()));
+
                     }
                     if (matcher.group(Type.ID.name()) != null) {
-                        System.out.println(matcher.group(t.name()));
+
                     }
                 }
             }
