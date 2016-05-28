@@ -1,8 +1,6 @@
 package model;
 
-import com.github.javaparser.ast.body.Parameter;
-
-import java.util.List;
+import java.util.HashMap;
 
 public class MethodModel {
     private String methodName = "";
@@ -17,6 +15,7 @@ public class MethodModel {
     private String methodInvocation = "";
     private String assign = "";
     private String localVariable = "";
+    private HashMap<String, Double> dictionary = new HashMap<String, Double>();
 
     public void setMethodName(String methodName) {
         this.methodName = methodName;
@@ -28,6 +27,23 @@ public class MethodModel {
 
     public void setParameter(String parameters) {
         this.parameters = parameters;
+    }
+
+    public HashMap<String, Double> getDictionary() {
+        return dictionary;
+    }
+
+    public void initDictionary() {
+        for (String s : methodBody.split(" ")) {
+            dictionary.put(s, 1.0);
+        }
+    }
+
+    public void setDictionary(String s, double d) {
+        if (dictionary.containsKey(s)) {
+            if (dictionary.get(s) < d)
+                dictionary.put(s, d);
+        }
     }
 
     public void setReturnValue(String returnValue) {

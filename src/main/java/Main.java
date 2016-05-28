@@ -1,5 +1,4 @@
 import controller.MethodsController;
-import core.scanner.LexicalAnalyzer;
 import core.score.TFIDF;
 import model.MethodModel;
 import model.ProgramModel;
@@ -15,11 +14,7 @@ public class Main {
             String[] docs = new String[ProgramModel.getInstance().getMethodModel().size()];
             for (int i = 0; i < ProgramModel.getInstance().getMethodModel().size(); i++) {
                 MethodModel m = ProgramModel.getInstance().getMethodModel().get(i);
-                docs[i] = LexicalAnalyzer.getInstance().getTokens(m.getMethodName() + " " + m.getMethodBody());
-
-
-                System.out.println("--------------------------");
-
+                docs[i] = m.getMethodBody();
             }
             TFIDF tf_idf = new TFIDF(docs);
             for (String s : tf_idf.getWordVector()) {

@@ -106,101 +106,13 @@ public class TFIDF {
         TreeSet<String> ts = new TreeSet<String>();
         for (int i = 0; i < ProgramModel.getInstance().getMethodModel().size(); i++) {
             MethodModel m = ProgramModel.getInstance().getMethodModel().get(i);
-            if (!m.getMethodName().equals("")) {
-                tfIdfMatrix[i][mapWordToIdx.get(m.getMethodName())] *= 3.93;
+            for (String s : m.getMethodBody().split(" ")) {
+                ts.add(s);
             }
-            if (!m.getReturnValue().equals("")) {
-                for (String s : m.getReturnValue().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 3.93;
-                }
-                ts.clear();
+            for (String s : ts) {
+                tfIdfMatrix[i][mapWordToIdx.get(s)] *= m.getDictionary().get(s);
             }
-            if (!m.getParameters().equals("")) {
-                for (String s : m.getParameters().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 2.69;
-                }
-                ts.clear();
-            }
-            if (!m.getIfCondition().equals("")) {
-                for (String s : m.getIfCondition().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 2.08;
-                }
-                ts.clear();
-            }
-            if (!m.getSwitchCase().equals("")) {
-                for (String s : m.getSwitchCase().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 2.08;
-                }
-                ts.clear();
-            }
-            if (!m.getLoopFor().equals("")) {
-                for (String s : m.getLoopFor().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 1.97;
-                }
-                ts.clear();
-            }
-            if (!m.getLoopWhile().equals("")) {
-                for (String s : m.getLoopWhile().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 1.97;
-                }
-                ts.clear();
-            }
-            if (!m.getLoopDo().equals("")) {
-                for (String s : m.getLoopDo().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 1.97;
-                }
-                ts.clear();
-            }
-            if (!m.getMethodInvocation().equals("")) {
-                for (String s : m.getMethodInvocation().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 2.94;
-                }
-                ts.clear();
-            }
-            if (!m.getAssign().equals("")) {
-                for (String s : m.getAssign().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 2.44;
-                }
-                ts.clear();
-            }
-            if (!m.getLocalVariable().equals("")) {
-
-                for (String s : m.getLocalVariable().split(" ")) {
-                    ts.add(s);
-                }
-                for (String s : ts) {
-                    tfIdfMatrix[i][mapWordToIdx.get(s)] *= 1.9;
-                }
-                ts.clear();
-            }
-
+            ts.clear();
         }
     }
 
