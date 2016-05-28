@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.TreeSet;
 
 public class TFIDF {
+    private HashMap<String, Integer> mapWordToIdx;
     int numOfWords;
     double[] idfVector;
     double[][] tfIdfMatrix;
@@ -17,7 +18,7 @@ public class TFIDF {
     public TFIDF(String[] docs) {
         // STEP 1, scan all words and count the number of different words
         // mapWordToIdx maps word to its vector index
-        HashMap<String, Integer> mapWordToIdx = new HashMap<String, Integer>();
+        mapWordToIdx = new HashMap<String, Integer>();
         int nextIdx = 0;
         for (String doc : docs) {
             for (String word : doc.split(" ")) {
@@ -114,6 +115,10 @@ public class TFIDF {
             }
             ts.clear();
         }
+    }
+
+    public HashMap<String, Integer> getWords() {
+        return mapWordToIdx;
     }
 
     public double[][] getTF_IDFMatrix() {
