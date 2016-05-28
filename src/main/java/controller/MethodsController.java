@@ -13,6 +13,7 @@ import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import core.scanner.LexicalAnalyzer;
 import model.MethodModel;
 import model.ProgramModel;
 
@@ -64,7 +65,7 @@ class MethodVisitor extends VoidVisitorAdapter {
     public void visit(ReturnStmt n, Object arg) {
         if (!functionParsing)
             return;
-//        System.out.println(n);
+        method.setReturnValue(LexicalAnalyzer.getInstance().getTokens(n.toString()));
         super.visit(n, arg);
     }
 

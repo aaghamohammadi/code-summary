@@ -7,6 +7,7 @@ import java.util.List;
 public class MethodModel {
     private String methodName;
     private String methodBody;
+    private String returnValue;
     private List<Parameter> parameters;
 
     public void setMethodName(String methodName) {
@@ -20,6 +21,14 @@ public class MethodModel {
     public void setParameter(List<Parameter> parameters) {
         this.parameters = parameters;
 
+    }
+
+    public void setReturnValue(String returnValue) {
+        this.returnValue = returnValue;
+    }
+
+    public String getReturnValue() {
+        return returnValue;
     }
 
     public List<Parameter> getParameters() {
