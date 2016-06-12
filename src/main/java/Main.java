@@ -2,6 +2,8 @@ import controller.MethodsController;
 import core.score.TFIDF;
 import model.MethodModel;
 import model.ProgramModel;
+import model.factor.AvgFactor;
+import model.factor.EYEC;
 
 import java.io.IOException;
 
@@ -10,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
         String path = "src/main/resources/test.java";
         try {
-            MethodsController methodsController = new MethodsController(path);
+            MethodsController methodsController = new MethodsController(path, "AvgFactor");
             String[] docs = new String[ProgramModel.getInstance().getMethodModel().size()];
             for (int i = 0; i < ProgramModel.getInstance().getMethodModel().size(); i++) {
                 MethodModel m = ProgramModel.getInstance().getMethodModel().get(i);

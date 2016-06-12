@@ -17,6 +17,7 @@ import core.scanner.LexicalAnalyzer;
 import model.MethodModel;
 import model.ProgramModel;
 import model.factor.AvgFactor;
+import model.factor.EYEC;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,7 +27,7 @@ public class MethodsController {
     private FileInputStream in;
     private CompilationUnit cu;
 
-    public MethodsController(String path) throws IOException {
+    public MethodsController(String path, String mode) throws IOException {
         try {
             in = new FileInputStream(path);
             cu = JavaParser.parse(in);
@@ -39,14 +40,19 @@ public class MethodsController {
             in.close();
         }
 
-        new MethodVisitor().visit(cu, null);
+        new MethodVisitor(mode).visit(cu, null);
     }
 }
 
 class MethodVisitor extends VoidVisitorAdapter {
     private boolean functionParsing = false;
+    private String mode;
     private MethodModel method;
     private ProgramModel programModel = ProgramModel.getInstance();
+
+    public MethodVisitor(String mode) {
+        this.mode = mode;
+    }
 
     @Override
     public void visit(MethodDeclaration n, Object arg) {
@@ -55,12 +61,22 @@ class MethodVisitor extends VoidVisitorAdapter {
         method.setMethodName(n.getName());
         method.setMethodBody(LexicalAnalyzer.getInstance().getTokens(n.getName() + " " + n.getParameters() + " " + n.getBody()));
         method.setParameter(LexicalAnalyzer.getInstance().getTokens(n.getParameters().toString()));
-
         method.initDictionary();
-        method.setDictionary(n.getName(), AvgFactor.METHODNAME.getValue());
-        for (String s : method.getParameters().split(" ")) {
-            method.setDictionary(s, AvgFactor.PARAMETERS.getValue());
+        switch (mode) {
+            case "EYEC":
+                method.setDictionary(n.getName(), EYEC.METHODNAME.getValue());
+                for (String s : method.getParameters().split(" ")) {
+                    method.setDictionary(s, EYEC.PARAMETERS.getValue());
+                }
+                break;
+            case "AvgFactor":
+                method.setDictionary(n.getName(), AvgFactor.METHODNAME.getValue());
+                for (String s : method.getParameters().split(" ")) {
+                    method.setDictionary(s, AvgFactor.PARAMETERS.getValue());
+                }
+                break;
         }
+
         functionParsing = true;
         super.visit(n, arg);
 
@@ -73,9 +89,17 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setReturnValue(LexicalAnalyzer.getInstance().getTokens(n.toString()));
-
-        for (String s : method.getReturnValue().split(" ")) {
-            method.setDictionary(s, AvgFactor.RETURNVALUE.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getReturnValue().split(" ")) {
+                    method.setDictionary(s, EYEC.RETURNVALUE.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getReturnValue().split(" ")) {
+                    method.setDictionary(s, AvgFactor.RETURNVALUE.getValue());
+                }
+                break;
         }
         super.visit(n, arg);
     }
@@ -85,8 +109,17 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setIfCondition(LexicalAnalyzer.getInstance().getTokens(n.toString()));
-        for (String s : method.getIfCondition().split(" ")) {
-            method.setDictionary(s, AvgFactor.BRANCHES.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getIfCondition().split(" ")) {
+                    method.setDictionary(s, EYEC.BRANCHES.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getIfCondition().split(" ")) {
+                    method.setDictionary(s, AvgFactor.BRANCHES.getValue());
+                }
+                break;
         }
         super.visit(n, arg);
     }
@@ -96,8 +129,17 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setLoopFor(LexicalAnalyzer.getInstance().getTokens(n.getInit().toString() + " " + n.getCompare().toString() + " " + n.getUpdate().toString()));
-        for (String s : method.getLoopFor().split(" ")) {
-            method.setDictionary(s, AvgFactor.LOOPS.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getLoopFor().split(" ")) {
+                    method.setDictionary(s, EYEC.LOOPS.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getLoopFor().split(" ")) {
+                    method.setDictionary(s, AvgFactor.LOOPS.getValue());
+                }
+                break;
         }
         super.visit(n, arg);
     }
@@ -107,9 +149,19 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setLoopWhile(LexicalAnalyzer.getInstance().getTokens(n.getCondition().toString()));
-        for (String s : method.getLoopWhile().split(" ")) {
-            method.setDictionary(s, AvgFactor.LOOPS.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getLoopWhile().split(" ")) {
+                    method.setDictionary(s, EYEC.LOOPS.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getLoopWhile().split(" ")) {
+                    method.setDictionary(s, AvgFactor.LOOPS.getValue());
+                }
+                break;
         }
+
         super.visit(n, arg);
     }
 
@@ -118,9 +170,19 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setSwitchCase(LexicalAnalyzer.getInstance().getTokens(n.getSelector().toString()));
-        for (String s : method.getSwitchCase().split(" ")) {
-            method.setDictionary(s, AvgFactor.BRANCHES.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getSwitchCase().split(" ")) {
+                    method.setDictionary(s, EYEC.BRANCHES.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getSwitchCase().split(" ")) {
+                    method.setDictionary(s, AvgFactor.BRANCHES.getValue());
+                }
+                break;
         }
+
         super.visit(n, arg);
     }
 
@@ -129,9 +191,19 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setLoopDo(LexicalAnalyzer.getInstance().getTokens(n.getCondition().toString()));
-        for (String s : method.getLoopDo().split(" ")) {
-            method.setDictionary(s, AvgFactor.LOOPS.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getLoopDo().split(" ")) {
+                    method.setDictionary(s, EYEC.LOOPS.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getLoopDo().split(" ")) {
+                    method.setDictionary(s, AvgFactor.LOOPS.getValue());
+                }
+                break;
         }
+
         super.visit(n, arg);
     }
 
@@ -140,8 +212,17 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setLocalVariable(LexicalAnalyzer.getInstance().getTokens(n.getId().toString()));
-        for (String s : method.getLocalVariable().split(" ")) {
-            method.setDictionary(s, AvgFactor.LOCALVARIABLE.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getLocalVariable().split(" ")) {
+                    method.setDictionary(s, EYEC.LOCALVARIABLE.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getLocalVariable().split(" ")) {
+                    method.setDictionary(s, AvgFactor.LOCALVARIABLE.getValue());
+                }
+                break;
         }
         super.visit(n, arg);
     }
@@ -151,8 +232,17 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setAssign(LexicalAnalyzer.getInstance().getTokens(n.getValue().toString()));
-        for (String s : method.getAssign().split(" ")) {
-            method.setDictionary(s, AvgFactor.ASSIGNMENT.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getAssign().split(" ")) {
+                    method.setDictionary(s, EYEC.ASSIGNMENT.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getAssign().split(" ")) {
+                    method.setDictionary(s, AvgFactor.ASSIGNMENT.getValue());
+                }
+                break;
         }
         super.visit(n, arg);
     }
@@ -162,8 +252,17 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setMethodInvocation(LexicalAnalyzer.getInstance().getTokens(n.toString()));
-        for (String s : method.getMethodInvocation().split(" ")) {
-            method.setDictionary(s, AvgFactor.METHODINVOCATION.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : method.getMethodInvocation().split(" ")) {
+                    method.setDictionary(s, EYEC.METHODINVOCATION.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : method.getMethodInvocation().split(" ")) {
+                    method.setDictionary(s, AvgFactor.METHODINVOCATION.getValue());
+                }
+                break;
         }
         super.visit(n, arg);
     }
@@ -172,8 +271,17 @@ class MethodVisitor extends VoidVisitorAdapter {
     public void visit(CatchClause n, Object arg) {
         if (!functionParsing)
             return;
-        for (String s : LexicalAnalyzer.getInstance().getTokens(n.getExcept().toString() + " " + n.getCatchBlock().toString()).split(" ")) {
-            method.setDictionary(s, AvgFactor.ERRORHANDLER.getValue());
+        switch (mode) {
+            case "EYEC":
+                for (String s : LexicalAnalyzer.getInstance().getTokens(n.getExcept().toString() + " " + n.getCatchBlock().toString()).split(" ")) {
+                    method.setDictionary(s, EYEC.ERRORHANDLER.getValue());
+                }
+                break;
+            case "AvgFactor":
+                for (String s : LexicalAnalyzer.getInstance().getTokens(n.getExcept().toString() + " " + n.getCatchBlock().toString()).split(" ")) {
+                    method.setDictionary(s, AvgFactor.ERRORHANDLER.getValue());
+                }
+                break;
         }
         super.visit(n, arg);
     }
