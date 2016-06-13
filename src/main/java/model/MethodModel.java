@@ -16,6 +16,7 @@ public class MethodModel {
     private String assign = "";
     private String localVariable = "";
     private HashMap<String, Double> dictionary = new HashMap<String, Double>();
+    private HashMap<String, String> typeWord = new HashMap<>();
 
     public void setMethodName(String methodName) {
         this.methodName = methodName;
@@ -33,16 +34,24 @@ public class MethodModel {
         return dictionary;
     }
 
+    public HashMap<String, String> getTypeWord() {
+        return typeWord;
+    }
+
     public void initDictionary() {
         for (String s : methodBody.split(" ")) {
             dictionary.put(s, 1.0);
+            typeWord.put(s, "Type");
         }
     }
 
-    public void setDictionary(String s, double d) {
+    public void setDictionary(String s, double d, String type) {
         if (dictionary.containsKey(s)) {
-            if (dictionary.get(s) < d)
+            if (dictionary.get(s) < d) {
+                typeWord.put(s, type);
                 dictionary.put(s, d);
+            }
+
         }
     }
 

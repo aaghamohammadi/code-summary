@@ -19,16 +19,7 @@ public class Main {
                 docs[i] = m.getMethodBody();
             }
             TFIDF tf_idf = new TFIDF(docs);
-//            for (String s : tf_idf.getWordVector()) {
-//                System.out.printf("%1s\t", s);
-//            }
-//            System.out.println();
-//            for (double[] docV : tf_idf.getTF_IDFMatrix()) {
-//                for (double v : docV) {
-//                    System.out.printf("%4f\t", v);
-//                }
-//                System.out.println();
-//            }
+
             for (int i = 0; i < ProgramModel.getInstance().getMethodModel().size(); i++) {
                 MethodModel m = ProgramModel.getInstance().getMethodModel().get(i);
 
@@ -36,7 +27,7 @@ public class Main {
                 System.out.println("Method: " + m.getMethodName());
                 System.out.println();
                 for (String s : m.getDictionary().keySet()) {
-                    System.out.printf("%-24s\t", s);
+                    System.out.printf("%s:%-24s\t", m.getTypeWord().get(s), s);
                     System.out.printf("%-12f\n", tf_idf.getTF_IDFMatrix()[i][tf_idf.getWords().get(s)]);
                 }
             }
