@@ -1,13 +1,15 @@
 import controller.MethodsController;
+import core.generator.AutoDocGenerator;
 import core.score.TFIDF;
-import core.util.Ranked;
+import core.score.Ranked;
 import model.MethodModel;
 import model.ProgramModel;
-import model.factor.AvgFactor;
-import model.factor.EYEC;
 
 import java.io.IOException;
 import java.util.Map;
+
+import static javafx.scene.input.KeyCode.K;
+import static javafx.scene.input.KeyCode.V;
 
 public class Main {
 
@@ -29,12 +31,19 @@ public class Main {
                 System.out.println("Method: " + m.getMethodName());
                 System.out.println();
                 for (String s : m.getDictionary().keySet()) {
-                    System.out.printf("%s:%-24s\t", m.getTypeWord().get(s), s);
-                    System.out.printf("%-12f\n", tf_idf.getTF_IDFMatrix()[i][tf_idf.getWords().get(s)]);
+//                    System.out.printf("%s:%-24s\t", m.getTypeWord().get(s), s);
+//                    System.out.printf("%-12f\n", tf_idf.getTF_IDFMatrix()[i][tf_idf.getWords().get(s)]);
                     ranked.setTopWord(i, s, tf_idf.getTF_IDFMatrix()[i][tf_idf.getWords().get(s)]);
                 }
-
+                // Generate Template Document
+                AutoDocGenerator autoDocGenerator = new AutoDocGenerator();
                 ranked.getTopWord(i).limit(5).forEach(System.out::println);
+                ranked.getTopWord(i).limit(5).forEach((v) -> {
+                    switch (m.getTypeWord().get(v.getKey())) {
+                        case "MethodName":
+                            autoDocGenerator.autoDocumentMethodName(v.getKey());
+                    }
+                });
             }
 
 
@@ -42,6 +51,7 @@ public class Main {
             e.printStackTrace();
         }
     }
+
 
 }
 

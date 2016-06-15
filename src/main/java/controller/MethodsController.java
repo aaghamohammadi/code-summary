@@ -3,18 +3,13 @@ package controller;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.body.VariableDeclaratorId;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.*;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import core.scanner.LexicalAnalyzer;
-import core.scanner.Type;
 import model.MethodModel;
 import model.ProgramModel;
 import model.factor.AvgFactor;
@@ -59,7 +54,6 @@ class MethodVisitor extends VoidVisitorAdapter {
     @Override
     public void visit(MethodDeclaration n, Object arg) {
         method = new MethodModel();
-
         method.setMethodName(n.getName());
         method.setMethodBody(LexicalAnalyzer.getInstance().getTokens(n.getName() + " " + n.getParameters() + " " + n.getBody()));
         method.setParameter(LexicalAnalyzer.getInstance().getTokens(n.getParameters().toString()));
