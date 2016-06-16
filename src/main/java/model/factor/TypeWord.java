@@ -9,7 +9,8 @@ public enum TypeWord {
     PARAMETERS("Parameters"),
     ASSIGNMENT("Assignment"),
     BRANCHES("Branchees"),
-    LOOPS("Loops"),
+    LOOPSFOR("LoopsFor"),
+    LOOPSWHILE("LoopsWhile"),
     LOCALVARIABLE("LocalVariable");
     private final String value;
 

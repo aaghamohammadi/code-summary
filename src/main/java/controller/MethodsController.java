@@ -57,6 +57,7 @@ class MethodVisitor extends VoidVisitorAdapter {
         method.setMethodName(n.getName());
         method.setMethodBody(LexicalAnalyzer.getInstance().getTokens(n.getName() + " " + n.getParameters() + " " + n.getBody()));
         method.setParameter(LexicalAnalyzer.getInstance().getTokens(n.getParameters().toString()));
+        method.setExpParameters(n.getParameters());
         method.initDictionary();
         switch (mode) {
             case "EYEC":
@@ -85,6 +86,7 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setReturnValue(LexicalAnalyzer.getInstance().getTokens(n.toString()));
+        method.setExpReturnValue(n.getExpr().toString());
         switch (mode) {
             case "EYEC":
                 for (String s : method.getReturnValue().split(" ")) {
@@ -125,15 +127,16 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setLoopFor(LexicalAnalyzer.getInstance().getTokens(n.getInit().toString() + " " + n.getCompare().toString() + " " + n.getUpdate().toString()));
+        method.setExpLoopFor(n);
         switch (mode) {
             case "EYEC":
                 for (String s : method.getLoopFor().split(" ")) {
-                    method.setDictionary(s, EYEC.LOOPS.getValue(), TypeWord.LOOPS.getValue());
+                    method.setDictionary(s, EYEC.LOOPSFOR.getValue(), TypeWord.LOOPSFOR.getValue());
                 }
                 break;
             case "AvgFactor":
                 for (String s : method.getLoopFor().split(" ")) {
-                    method.setDictionary(s, AvgFactor.LOOPS.getValue(), TypeWord.LOOPS.getValue());
+                    method.setDictionary(s, AvgFactor.LOOPSFOR.getValue(), TypeWord.LOOPSFOR.getValue());
                 }
                 break;
         }
@@ -148,12 +151,12 @@ class MethodVisitor extends VoidVisitorAdapter {
         switch (mode) {
             case "EYEC":
                 for (String s : method.getLoopWhile().split(" ")) {
-                    method.setDictionary(s, EYEC.LOOPS.getValue(), TypeWord.LOOPS.getValue());
+                    method.setDictionary(s, EYEC.LOOPSWHILE.getValue(), TypeWord.LOOPSWHILE.getValue());
                 }
                 break;
             case "AvgFactor":
                 for (String s : method.getLoopWhile().split(" ")) {
-                    method.setDictionary(s, AvgFactor.LOOPS.getValue(), TypeWord.LOOPS.getValue());
+                    method.setDictionary(s, AvgFactor.LOOPSWHILE.getValue(), TypeWord.LOOPSWHILE.getValue());
                 }
                 break;
         }
@@ -190,12 +193,12 @@ class MethodVisitor extends VoidVisitorAdapter {
         switch (mode) {
             case "EYEC":
                 for (String s : method.getLoopDo().split(" ")) {
-                    method.setDictionary(s, EYEC.LOOPS.getValue(), TypeWord.LOOPS.getValue());
+                    method.setDictionary(s, EYEC.LOOPSWHILE.getValue(), TypeWord.LOOPSWHILE.getValue());
                 }
                 break;
             case "AvgFactor":
                 for (String s : method.getLoopDo().split(" ")) {
-                    method.setDictionary(s, AvgFactor.LOOPS.getValue(), TypeWord.LOOPS.getValue());
+                    method.setDictionary(s, AvgFactor.LOOPSWHILE.getValue(), TypeWord.LOOPSWHILE.getValue());
                 }
                 break;
         }

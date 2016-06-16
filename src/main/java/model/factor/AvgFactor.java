@@ -9,7 +9,8 @@ public enum AvgFactor {
     PARAMETERS(2.69),
     ASSIGNMENT(2.44),
     BRANCHES(2.08),
-    LOOPS(1.97),
+    LOOPSFOR(1.97),
+    LOOPSWHILE(1.97),
     LOCALVARIABLE(1.9);
 
 

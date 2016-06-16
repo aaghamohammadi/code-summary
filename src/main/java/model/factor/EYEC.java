@@ -9,7 +9,8 @@ public enum EYEC {
     PARAMETERS(1.0),
     ASSIGNMENT(1.0),
     BRANCHES(0.6),
-    LOOPS(0.6),
+    LOOPSFOR(0.6),
+    LOOPSWHILE(0.6),
     LOCALVARIABLE(1.0);
 
 

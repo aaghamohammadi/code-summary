@@ -39,9 +39,23 @@ public class Main {
                 AutoDocGenerator autoDocGenerator = new AutoDocGenerator();
                 ranked.getTopWord(i).limit(5).forEach(System.out::println);
                 ranked.getTopWord(i).limit(5).forEach((v) -> {
+                    System.out.println(m.getTypeWord().get(v.getKey()));
                     switch (m.getTypeWord().get(v.getKey())) {
                         case "MethodName":
                             autoDocGenerator.autoDocumentMethodName(v.getKey());
+                            break;
+                        case "LocalVariable":
+                            autoDocGenerator.autoDocumentLocalVriable(v.getKey());
+                            break;
+                        case "RetrunValue":
+                            autoDocGenerator.autoDocumentReturnValue(m.getExpReturnValue());
+                            break;
+                        case "Parameters":
+                            autoDocGenerator.autoDocumentParameters(m.getExpParameters());
+                            break;
+                        case "LoopsFor":
+                            autoDocGenerator.autoDocumentLoopsFor(m.getExpLoopFor());
+
                     }
                 });
             }

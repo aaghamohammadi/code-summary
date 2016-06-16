@@ -1,15 +1,25 @@
 package model;
 
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.stmt.ForStmt;
+
 import java.util.HashMap;
+import java.util.List;
 
 public class MethodModel {
     private String methodName = "";
     private String methodBody = "";
+
     private String returnValue = "";
+    private String expReturnValue = "";
+
     private String parameters = "";
+    private List<Parameter> expParameters;
+
     private String ifCondition = "";
     private String switchCase = "";
     private String loopFor = "";
+    private ForStmt expLoopFor;
     private String loopWhile = "";
     private String loopDo = "";
     private String methodInvocation = "";
@@ -20,6 +30,22 @@ public class MethodModel {
 
     public void setMethodName(String methodName) {
         this.methodName = methodName;
+    }
+
+    public void setExpReturnValue(String returnValue) {
+        expReturnValue = returnValue;
+    }
+
+    public void setExpParameters(List<Parameter> parameters) {
+        expParameters = parameters;
+    }
+
+    public List<Parameter> getExpParameters() {
+        return expParameters;
+    }
+
+    public String getExpReturnValue() {
+        return expReturnValue;
     }
 
     public void setMethodBody(String methodBody) {
@@ -138,5 +164,13 @@ public class MethodModel {
 
     public String getLocalVariable() {
         return localVariable;
+    }
+
+    public void setExpLoopFor(ForStmt expLoopFor) {
+        this.expLoopFor = expLoopFor;
+    }
+
+    public ForStmt getExpLoopFor() {
+        return expLoopFor;
     }
 }
