@@ -11,6 +11,7 @@ public enum TypeWord {
     BRANCHES("Branchees"),
     LOOPSFOR("LoopsFor"),
     LOOPSWHILE("LoopsWhile"),
+    LOOPSDO("LoopsDo"),
     LOCALVARIABLE("LocalVariable");
     private final String value;
 

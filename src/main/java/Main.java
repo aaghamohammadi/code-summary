@@ -37,9 +37,9 @@ public class Main {
                 }
                 // Generate Template Document
                 AutoDocGenerator autoDocGenerator = new AutoDocGenerator();
-                ranked.getTopWord(i).limit(5).forEach(System.out::println);
+
                 ranked.getTopWord(i).limit(5).forEach((v) -> {
-                    System.out.println(m.getTypeWord().get(v.getKey()));
+//                    System.out.println(m.getTypeWord().get(v.getKey()) + " " + v);
                     switch (m.getTypeWord().get(v.getKey())) {
                         case "MethodName":
                             autoDocGenerator.autoDocumentMethodName(v.getKey());
@@ -54,7 +54,20 @@ public class Main {
                             autoDocGenerator.autoDocumentParameters(m.getExpParameters());
                             break;
                         case "LoopsFor":
-                            autoDocGenerator.autoDocumentLoopsFor(m.getExpLoopFor());
+                            autoDocGenerator.autoDocumentLoopsFor(m.getExpLoopFor(), v.getKey());
+                            break;
+                        case "LoopsWhile":
+                            autoDocGenerator.autoDocumentLoopsWhile(m.getExpLoopWhile(), v.getKey());
+                            break;
+                        case "LoopsDo":
+                            autoDocGenerator.autoDocumentLoopsDo(m.getExpLoopDo(), v.getKey());
+                            break;
+                        case "Assignment":
+                            autoDocGenerator.autoDocumentAssignment(m.getExpAssign(), v.getKey());
+                            break;
+                        case "MethodInvocation":
+                            autoDocGenerator.autoDocumentMethodInvocation(m.getExpMethodInvocation(), v.getKey());
+                            break;
 
                     }
                 });

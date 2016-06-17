@@ -1,8 +1,13 @@
 package model;
 
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.stmt.DoStmt;
 import com.github.javaparser.ast.stmt.ForStmt;
+import com.github.javaparser.ast.stmt.WhileStmt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,11 +24,17 @@ public class MethodModel {
     private String ifCondition = "";
     private String switchCase = "";
     private String loopFor = "";
-    private ForStmt expLoopFor;
+    private ArrayList<ForStmt> expLoopFor = new ArrayList<>();
+    private ArrayList<WhileStmt> expLoopWhile = new ArrayList<>();
     private String loopWhile = "";
+
+    private ArrayList<DoStmt> expLoopDo = new ArrayList<>();
     private String loopDo = "";
+
     private String methodInvocation = "";
+    private ArrayList<MethodCallExpr> expMethodInvocation = new ArrayList<>();
     private String assign = "";
+    private ArrayList<AssignExpr> expAssign = new ArrayList<>();
     private String localVariable = "";
     private HashMap<String, Double> dictionary = new HashMap<String, Double>();
     private HashMap<String, String> typeWord = new HashMap<>();
@@ -167,10 +178,42 @@ public class MethodModel {
     }
 
     public void setExpLoopFor(ForStmt expLoopFor) {
-        this.expLoopFor = expLoopFor;
+        this.expLoopFor.add(expLoopFor);
     }
 
-    public ForStmt getExpLoopFor() {
+    public void setExpLoopWhile(WhileStmt expLoopWhile) {
+        this.expLoopWhile.add(expLoopWhile);
+    }
+
+    public ArrayList<WhileStmt> getExpLoopWhile() {
+        return expLoopWhile;
+    }
+
+    public ArrayList<ForStmt> getExpLoopFor() {
         return expLoopFor;
+    }
+
+    public ArrayList<DoStmt> getExpLoopDo() {
+        return expLoopDo;
+    }
+
+    public void setExpLoopDo(DoStmt expLoopDo) {
+        this.expLoopDo.add(expLoopDo);
+    }
+
+    public void setExpAssign(AssignExpr expAssign) {
+        this.expAssign.add(expAssign);
+    }
+
+    public ArrayList<AssignExpr> getExpAssign() {
+        return expAssign;
+    }
+
+    public void setExpMethodInvocation(MethodCallExpr expMethodInvocation) {
+        this.expMethodInvocation.add(expMethodInvocation);
+    }
+
+    public ArrayList<MethodCallExpr> getExpMethodInvocation() {
+        return expMethodInvocation;
     }
 }
