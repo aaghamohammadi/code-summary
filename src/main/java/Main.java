@@ -68,7 +68,15 @@ public class Main {
                         case "MethodInvocation":
                             autoDocGenerator.autoDocumentMethodInvocation(m.getExpMethodInvocation(), v.getKey());
                             break;
-
+                        case "IF":
+                            autoDocGenerator.autoDocumentIfCondition(m.getExpIfConditions(), v.getKey());
+                            break;
+                        case "SWITCH":
+                            autoDocGenerator.autoDocumentSwitch(m.getExpSwith(), v.getKey());
+                            break;
+                        case "ErrorHandler":
+                            autoDocGenerator.autoDocumentCatch(m.getExpCatch(), v.getKey());
+                            break;
                     }
                 });
             }

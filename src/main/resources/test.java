@@ -1,7 +1,11 @@
 class A {
     public static int normalize(String string) {
         int i = 0;
-        i = Math.abs(i);
+        try{
+            i--;
+        }catch (Exception e){
+            i = i+2;
+        }
         return 0;
     }
 

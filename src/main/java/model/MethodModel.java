@@ -3,9 +3,7 @@ package model;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.stmt.DoStmt;
-import com.github.javaparser.ast.stmt.ForStmt;
-import com.github.javaparser.ast.stmt.WhileStmt;
+import com.github.javaparser.ast.stmt.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,11 +20,15 @@ public class MethodModel {
     private List<Parameter> expParameters;
 
     private String ifCondition = "";
+    private ArrayList<IfStmt> expIfConditions = new ArrayList<>();
     private String switchCase = "";
+    private ArrayList<SwitchStmt> expSwith = new ArrayList<>();
     private String loopFor = "";
     private ArrayList<ForStmt> expLoopFor = new ArrayList<>();
     private ArrayList<WhileStmt> expLoopWhile = new ArrayList<>();
     private String loopWhile = "";
+
+    private ArrayList<CatchClause> expCatch = new ArrayList<>();
 
     private ArrayList<DoStmt> expLoopDo = new ArrayList<>();
     private String loopDo = "";
@@ -215,5 +217,29 @@ public class MethodModel {
 
     public ArrayList<MethodCallExpr> getExpMethodInvocation() {
         return expMethodInvocation;
+    }
+
+    public void setExpIfCondition(IfStmt expIfCondition) {
+        this.expIfConditions.add(expIfCondition);
+    }
+
+    public ArrayList<IfStmt> getExpIfConditions() {
+        return expIfConditions;
+    }
+
+    public void setExpSwitch(SwitchStmt expSwitch) {
+        this.expSwith.add(expSwitch);
+    }
+
+    public ArrayList<SwitchStmt> getExpSwith() {
+        return expSwith;
+    }
+
+    public void setExpCatch(CatchClause expCatch) {
+        this.expCatch.add(expCatch);
+    }
+
+    public ArrayList<CatchClause> getExpCatch() {
+        return expCatch;
     }
 }

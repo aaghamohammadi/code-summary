@@ -3,11 +3,10 @@ package core.generator;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.stmt.DoStmt;
-import com.github.javaparser.ast.stmt.ForStmt;
-import com.github.javaparser.ast.stmt.WhileStmt;
+import com.github.javaparser.ast.stmt.*;
 import core.scanner.LexicalAnalyzer;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +91,33 @@ public class AutoDocGenerator {
 
     public void autoDocumentMethodInvocation(ArrayList<MethodCallExpr> methodCallExprs, String methodInvocation) {
         methodCallExprs.stream().filter(m -> methodInvocation.equals(m.getName())).forEach(m -> System.out.println("This method call method " + m));
+    }
+
+    public void autoDocumentIfCondition(ArrayList<IfStmt> ifConditions, String ifCondition) {
+        for (IfStmt i : ifConditions) {
+            if (i.getCondition().toString().contains(ifCondition)) {
+                System.out.println("decides based on " + i.getCondition() + " if it is true then " + i.getThenStmt());
+                if (i.getElseStmt() != null) {
+                    System.out.println("otherwise " + i.getElseStmt());
+                }
+            }
+        }
+    }
+
+    public void autoDocumentSwitch(ArrayList<SwitchStmt> expSwitch, String switchCase) {
+        for (SwitchStmt s : expSwitch) {
+            if (s.getSelector().toString().contains(switchCase)) {
+                System.out.println("Decides different actions based on the " + s.getSelector());
+            }
+        }
+    }
+
+    public void autoDocumentCatch(ArrayList<CatchClause> catchClauses, String catchClause) {
+        for (CatchClause c : catchClauses) {
+            if (c.getExcept().toString().contains(catchClause) || c.getCatchBlock().toString().contains(catchClause)) {
+                System.out.println("This method handles error by using exception mechanisms");
+            }
+        }
     }
 
     /**

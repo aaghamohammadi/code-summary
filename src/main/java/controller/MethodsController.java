@@ -107,15 +107,16 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setIfCondition(LexicalAnalyzer.getInstance().getTokens(n.toString()));
+        method.setExpIfCondition(n);
         switch (mode) {
             case "EYEC":
                 for (String s : method.getIfCondition().split(" ")) {
-                    method.setDictionary(s, EYEC.BRANCHES.getValue(), TypeWord.BRANCHES.getValue());
+                    method.setDictionary(s, EYEC.BRANCHES.getValue(), TypeWord.IF.getValue());
                 }
                 break;
             case "AvgFactor":
                 for (String s : method.getIfCondition().split(" ")) {
-                    method.setDictionary(s, AvgFactor.BRANCHES.getValue(), TypeWord.BRANCHES.getValue());
+                    method.setDictionary(s, AvgFactor.BRANCHES.getValue(), TypeWord.IF.getValue());
                 }
                 break;
         }
@@ -170,15 +171,16 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setSwitchCase(LexicalAnalyzer.getInstance().getTokens(n.getSelector().toString()));
+        method.setExpSwitch(n);
         switch (mode) {
             case "EYEC":
                 for (String s : method.getSwitchCase().split(" ")) {
-                    method.setDictionary(s, EYEC.BRANCHES.getValue(), TypeWord.BRANCHES.getValue());
+                    method.setDictionary(s, EYEC.BRANCHES.getValue(), TypeWord.SWITCH.getValue());
                 }
                 break;
             case "AvgFactor":
                 for (String s : method.getSwitchCase().split(" ")) {
-                    method.setDictionary(s, AvgFactor.BRANCHES.getValue(), TypeWord.BRANCHES.getValue());
+                    method.setDictionary(s, AvgFactor.BRANCHES.getValue(), TypeWord.SWITCH.getValue());
                 }
                 break;
         }
@@ -274,6 +276,7 @@ class MethodVisitor extends VoidVisitorAdapter {
     public void visit(CatchClause n, Object arg) {
         if (!functionParsing)
             return;
+        method.setExpCatch(n);
         switch (mode) {
             case "EYEC":
                 for (String s : LexicalAnalyzer.getInstance().getTokens(n.getExcept().toString() + " " + n.getCatchBlock().toString()).split(" ")) {
