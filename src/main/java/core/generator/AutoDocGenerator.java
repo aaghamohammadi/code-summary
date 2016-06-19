@@ -4,6 +4,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.*;
+import com.sun.org.apache.regexp.internal.RE;
 import core.scanner.LexicalAnalyzer;
 
 import java.lang.reflect.Array;
@@ -37,8 +38,13 @@ public class AutoDocGenerator {
      *
      * @param returnValue the return value
      */
-    public void autoDocumentReturnValue(String returnValue) {
-        System.out.println("This method finally returns " + returnValue);
+    public void autoDocumentReturnValue(ArrayList<ReturnStmt> returnStmts, String returnValue) {
+        for (ReturnStmt r : returnStmts) {
+            if (r.toString().contains(returnValue)) {
+                System.out.println("This method finally returns " + r.toString());
+            }
+        }
+
     }
 
     /**
@@ -90,7 +96,11 @@ public class AutoDocGenerator {
     }
 
     public void autoDocumentMethodInvocation(ArrayList<MethodCallExpr> methodCallExprs, String methodInvocation) {
-        methodCallExprs.stream().filter(m -> methodInvocation.equals(m.getName())).forEach(m -> System.out.println("This method call method " + m));
+        for (MethodCallExpr m : methodCallExprs) {
+            if (m.toString().contains(methodInvocation)) {
+                System.out.println("This method call " + m.toString());
+            }
+        }
     }
 
     public void autoDocumentIfCondition(ArrayList<IfStmt> ifConditions, String ifCondition) {

@@ -14,7 +14,7 @@ public class MethodModel {
     private String methodBody = "";
 
     private String returnValue = "";
-    private String expReturnValue = "";
+    private ArrayList<ReturnStmt> expReturnValue = new ArrayList<>();
 
     private String parameters = "";
     private List<Parameter> expParameters;
@@ -45,8 +45,8 @@ public class MethodModel {
         this.methodName = methodName;
     }
 
-    public void setExpReturnValue(String returnValue) {
-        expReturnValue = returnValue;
+    public void setExpReturnValue(ReturnStmt returnValue) {
+        this.expReturnValue.add(returnValue);
     }
 
     public void setExpParameters(List<Parameter> parameters) {
@@ -57,7 +57,7 @@ public class MethodModel {
         return expParameters;
     }
 
-    public String getExpReturnValue() {
+    public ArrayList<ReturnStmt> getExpReturnValue() {
         return expReturnValue;
     }
 

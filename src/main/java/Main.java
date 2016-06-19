@@ -37,45 +37,69 @@ public class Main {
                 }
                 // Generate Template Document
                 AutoDocGenerator autoDocGenerator = new AutoDocGenerator();
-
-                ranked.getTopWord(i).limit(5).forEach((v) -> {
+                boolean[] isValid = new boolean[12];
+                ranked.getTopWord(i).limit(10).forEach((v) -> {
 //                    System.out.println(m.getTypeWord().get(v.getKey()) + " " + v);
                     switch (m.getTypeWord().get(v.getKey())) {
                         case "MethodName":
-                            autoDocGenerator.autoDocumentMethodName(v.getKey());
+                            if (!isValid[0])
+                                autoDocGenerator.autoDocumentMethodName(v.getKey());
+                            isValid[0] = true;
                             break;
                         case "LocalVariable":
-                            autoDocGenerator.autoDocumentLocalVriable(v.getKey());
+                            if (!isValid[1])
+                                autoDocGenerator.autoDocumentLocalVriable(v.getKey());
+                            isValid[1] = true;
                             break;
                         case "RetrunValue":
-                            autoDocGenerator.autoDocumentReturnValue(m.getExpReturnValue());
+                            if (!isValid[2])
+                                autoDocGenerator.autoDocumentReturnValue(m.getExpReturnValue(), v.getKey());
+                            isValid[2] = true;
                             break;
                         case "Parameters":
-                            autoDocGenerator.autoDocumentParameters(m.getExpParameters());
+                            if (!isValid[3])
+                                autoDocGenerator.autoDocumentParameters(m.getExpParameters());
+                            isValid[3] = true;
                             break;
                         case "LoopsFor":
-                            autoDocGenerator.autoDocumentLoopsFor(m.getExpLoopFor(), v.getKey());
+                            if (!isValid[4])
+                                autoDocGenerator.autoDocumentLoopsFor(m.getExpLoopFor(), v.getKey());
+                            isValid[4] = true;
                             break;
                         case "LoopsWhile":
-                            autoDocGenerator.autoDocumentLoopsWhile(m.getExpLoopWhile(), v.getKey());
+                            if (!isValid[5])
+                                autoDocGenerator.autoDocumentLoopsWhile(m.getExpLoopWhile(), v.getKey());
+                            isValid[5] = true;
                             break;
                         case "LoopsDo":
-                            autoDocGenerator.autoDocumentLoopsDo(m.getExpLoopDo(), v.getKey());
+                            if (!isValid[6])
+                                autoDocGenerator.autoDocumentLoopsDo(m.getExpLoopDo(), v.getKey());
+                            isValid[6] = true;
                             break;
                         case "Assignment":
-                            autoDocGenerator.autoDocumentAssignment(m.getExpAssign(), v.getKey());
+                            if (!isValid[7])
+                                autoDocGenerator.autoDocumentAssignment(m.getExpAssign(), v.getKey());
+                            isValid[7] = true;
                             break;
                         case "MethodInvocation":
-                            autoDocGenerator.autoDocumentMethodInvocation(m.getExpMethodInvocation(), v.getKey());
+                            if (!isValid[8])
+                                autoDocGenerator.autoDocumentMethodInvocation(m.getExpMethodInvocation(), v.getKey());
+                            isValid[8] = true;
                             break;
                         case "IF":
-                            autoDocGenerator.autoDocumentIfCondition(m.getExpIfConditions(), v.getKey());
+                            if (!isValid[9])
+                                autoDocGenerator.autoDocumentIfCondition(m.getExpIfConditions(), v.getKey());
+                            isValid[9] = true;
                             break;
                         case "SWITCH":
-                            autoDocGenerator.autoDocumentSwitch(m.getExpSwith(), v.getKey());
+                            if (!isValid[10])
+                                autoDocGenerator.autoDocumentSwitch(m.getExpSwith(), v.getKey());
+                            isValid[10] = true;
                             break;
                         case "ErrorHandler":
-                            autoDocGenerator.autoDocumentCatch(m.getExpCatch(), v.getKey());
+                            if (!isValid[11])
+                                autoDocGenerator.autoDocumentCatch(m.getExpCatch(), v.getKey());
+                            isValid[11] = true;
                             break;
                     }
                 });

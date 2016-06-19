@@ -86,7 +86,7 @@ class MethodVisitor extends VoidVisitorAdapter {
         if (!functionParsing)
             return;
         method.setReturnValue(LexicalAnalyzer.getInstance().getTokens(n.toString()));
-        method.setExpReturnValue(n.getExpr().toString());
+        method.setExpReturnValue(n);
         switch (mode) {
             case "EYEC":
                 for (String s : method.getReturnValue().split(" ")) {
