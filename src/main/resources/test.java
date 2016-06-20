@@ -57,6 +57,76 @@ class A {
         }
         out.write(encodeAsPNG(image));
     }
+    protected org.openide.nodes.Sheet createSheet() {
+
+        Sheet sheet = super.createSheet();
+
+        Sheet.Set propertySet = Sheet.createPropertiesSet();
+        propertySet.setName("wmsmap");
+        StandardWmsMapComponent component = (StandardWmsMapComponent) ((JRDesignComponentElement) getElement()).getComponent();
+        propertySet.setDisplayName(I18n.getString("wmsmap"));
+
+        JRDesignDataset dataset = ModelUtils.getElementDataset(getElement(), getJasperDesign());
+
+        propertySet.put(new EvaluationTimeProperty(component, dataset));
+        propertySet.put(new EvaluationGroupProperty(component, dataset));
+        propertySet.put(new WmsServiceUrlProperty(component));
+        propertySet.put(new WmsVersionListProperty(component));
+        propertySet.put(new WmsSrsCrsProperty(component));
+        propertySet.put(new WmsMapBBoxProperty(component, dataset));
+        propertySet.put(new WmsMapLayersProperty(component, dataset));
+        propertySet.put(new WmsMapStylesProperty(component, dataset));
+        propertySet.put(new WmsMapImageTypeListProperty(component));
+        propertySet.put(new WmsTransparentProperty(component));
+        propertySet.put(new WmsUrlParametersProperty(component, dataset));
+
+        sheet.put(propertySet);
+
+        return sheet;
+    }
+    private static String encodeParameter(String key, Object value) {
+        try {
+            String encName = encode(key, UTF_8);
+            String encValue = encode(value.toString(), UTF_8);
+            String encodedParameter = String.format("%s=%s", encName, encValue);
+            return encodedParameter;
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Encoding UTF-8 not supported on runtime");
+        }
+    }
+
+    public ImageIcon getIcon(int width) {
+
+        if (cachedImage != null && cachedImage.getIconWidth() == width) {
+            return cachedImage;
+        }
+
+
+        cachedImage = getFasterScaledInstance(getIcon(), width, -1);
+        return cachedImage;
+    }
+
+    public static ImageIcon getFasterScaledInstance(ImageIcon img, int targetWidth, int targetHeight) {
+        if (img == null) {
+            return null;
+        }
+
+        if (targetWidth == -1 && targetHeight > 0) {
+            targetWidth = (int) (img.getIconWidth() * targetHeight * 1.0 / img.getIconHeight());
+        } else if (targetHeight == -1 && targetWidth > 0) {
+            targetHeight = (int) (img.getIconHeight() * targetWidth * 1.0 / img.getIconWidth());
+        } else if (targetWidth <= 0 || targetHeight <= 0) {
+            return img;
+        }
+
+        BufferedImage buf = new BufferedImage(img.getIconWidth(), img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        buf.createGraphics().drawImage(img.getImage(), 0, 0, null);
+
+        Image newImg = getFasterScaledInstance(buf, targetWidth, targetHeight, RenderingHints.VALUE_INTERPOLATION_BILINEAR, true);
+
+
+        return new ImageIcon(newImg);
+    }
 
 
 }

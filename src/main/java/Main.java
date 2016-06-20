@@ -38,71 +38,77 @@ public class Main {
                 // Generate Template Document
                 AutoDocGenerator autoDocGenerator = new AutoDocGenerator();
                 boolean[] isValid = new boolean[12];
+                String[] templates = new String[12];
                 ranked.getTopWord(i).limit(10).forEach((v) -> {
-//                    System.out.println(m.getTypeWord().get(v.getKey()) + " " + v);
+                    System.out.println(m.getTypeWord().get(v.getKey()) + " " + v);
                     switch (m.getTypeWord().get(v.getKey())) {
                         case "MethodName":
                             if (!isValid[0])
-                                autoDocGenerator.autoDocumentMethodName(v.getKey());
+                                templates[0] = autoDocGenerator.autoDocumentMethodName(v.getKey());
                             isValid[0] = true;
                             break;
                         case "LocalVariable":
-                            if (!isValid[1])
-                                autoDocGenerator.autoDocumentLocalVriable(v.getKey());
-                            isValid[1] = true;
+                            if (!isValid[8])
+                                templates[8] = autoDocGenerator.autoDocumentLocalVriable(v.getKey());
+                            isValid[8] = true;
                             break;
                         case "RetrunValue":
-                            if (!isValid[2])
-                                autoDocGenerator.autoDocumentReturnValue(m.getExpReturnValue(), v.getKey());
-                            isValid[2] = true;
+                            if (!isValid[11])
+                                templates[11] = autoDocGenerator.autoDocumentReturnValue(m.getExpReturnValue(), v.getKey());
+                            isValid[11] = true;
                             break;
                         case "Parameters":
-                            if (!isValid[3])
-                                autoDocGenerator.autoDocumentParameters(m.getExpParameters());
-                            isValid[3] = true;
+                            if (!isValid[1])
+                                templates[1] = autoDocGenerator.autoDocumentParameters(m.getExpParameters());
+                            isValid[1] = true;
                             break;
                         case "LoopsFor":
                             if (!isValid[4])
-                                autoDocGenerator.autoDocumentLoopsFor(m.getExpLoopFor(), v.getKey());
+                                templates[4] = autoDocGenerator.autoDocumentLoopsFor(m.getExpLoopFor(), v.getKey());
                             isValid[4] = true;
                             break;
                         case "LoopsWhile":
                             if (!isValid[5])
-                                autoDocGenerator.autoDocumentLoopsWhile(m.getExpLoopWhile(), v.getKey());
+                                templates[5] = autoDocGenerator.autoDocumentLoopsWhile(m.getExpLoopWhile(), v.getKey());
                             isValid[5] = true;
                             break;
                         case "LoopsDo":
                             if (!isValid[6])
-                                autoDocGenerator.autoDocumentLoopsDo(m.getExpLoopDo(), v.getKey());
+                                templates[6] = autoDocGenerator.autoDocumentLoopsDo(m.getExpLoopDo(), v.getKey());
                             isValid[6] = true;
                             break;
                         case "Assignment":
-                            if (!isValid[7])
-                                autoDocGenerator.autoDocumentAssignment(m.getExpAssign(), v.getKey());
-                            isValid[7] = true;
-                            break;
-                        case "MethodInvocation":
-                            if (!isValid[8])
-                                autoDocGenerator.autoDocumentMethodInvocation(m.getExpMethodInvocation(), v.getKey());
-                            isValid[8] = true;
-                            break;
-                        case "IF":
                             if (!isValid[9])
-                                autoDocGenerator.autoDocumentIfCondition(m.getExpIfConditions(), v.getKey());
+                                templates[9] = autoDocGenerator.autoDocumentAssignment(m.getExpAssign(), v.getKey());
                             isValid[9] = true;
                             break;
+                        case "MethodInvocation":
+                            if (!isValid[2])
+                                templates[2] = autoDocGenerator.autoDocumentMethodInvocation(m.getExpMethodInvocation(), v.getKey());
+                            isValid[2] = true;
+                            break;
+                        case "IF":
+                            if (!isValid[7])
+                                templates[7] = autoDocGenerator.autoDocumentIfCondition(m.getExpIfConditions(), v.getKey());
+                            isValid[7] = true;
+                            break;
                         case "SWITCH":
-                            if (!isValid[10])
-                                autoDocGenerator.autoDocumentSwitch(m.getExpSwith(), v.getKey());
-                            isValid[10] = true;
+                            if (!isValid[3])
+                                templates[3] = autoDocGenerator.autoDocumentSwitch(m.getExpSwith(), v.getKey());
+                            isValid[3] = true;
                             break;
                         case "ErrorHandler":
-                            if (!isValid[11])
-                                autoDocGenerator.autoDocumentCatch(m.getExpCatch(), v.getKey());
-                            isValid[11] = true;
+                            if (!isValid[10])
+                                templates[10] = autoDocGenerator.autoDocumentCatch(m.getExpCatch(), v.getKey());
+                            isValid[10] = true;
                             break;
                     }
                 });
+                for (String s : templates) {
+                    if (s != null && !s.equals("")) {
+                        System.out.println(s);
+                    }
+                }
             }
 
 

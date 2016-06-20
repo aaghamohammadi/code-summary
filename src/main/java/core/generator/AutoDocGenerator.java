@@ -4,12 +4,12 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.*;
-import com.sun.org.apache.regexp.internal.RE;
-import core.scanner.LexicalAnalyzer;
+import sun.reflect.generics.tree.Tree;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * The type Auto doc generator.
@@ -20,8 +20,8 @@ public class AutoDocGenerator {
      *
      * @param methodName the method name
      */
-    public void autoDocumentMethodName(String methodName) {
-        System.out.println("This Method " + splitCamelCase(methodName));
+    public String autoDocumentMethodName(String methodName) {
+        return "This Method " + splitCamelCase(methodName);
     }
 
     /**
@@ -29,8 +29,8 @@ public class AutoDocGenerator {
      *
      * @param localVariable the local variable
      */
-    public void autoDocumentLocalVriable(String localVariable) {
-        System.out.println(localVariable + " is a local variable of this method which acts in the main process of the method");
+    public String autoDocumentLocalVriable(String localVariable) {
+        return localVariable + " is a local variable of this method which acts in the main process of the method";
     }
 
     /**
@@ -38,13 +38,18 @@ public class AutoDocGenerator {
      *
      * @param returnValue the return value
      */
-    public void autoDocumentReturnValue(ArrayList<ReturnStmt> returnStmts, String returnValue) {
+    public String autoDocumentReturnValue(ArrayList<ReturnStmt> returnStmts, String returnValue) {
+        TreeSet<String> t = new TreeSet<>();
         for (ReturnStmt r : returnStmts) {
             if (r.toString().contains(returnValue)) {
-                System.out.println("This method finally returns " + r.toString());
+                t.add(r.getExpr().toString());
             }
         }
-
+        if (t.size() > 1) {
+            String temp = "This method based of different conditions return " + t;
+            return temp;
+        } else
+            return "This method finally returns " + t;
     }
 
     /**
@@ -52,82 +57,122 @@ public class AutoDocGenerator {
      *
      * @param parameters the parameters
      */
-    public void autoDocumentParameters(List<Parameter> parameters) {
-        System.out.print("This method gets ");
+    public String autoDocumentParameters(List<Parameter> parameters) {
+        String temp = "This method gets ";
         for (Parameter p : parameters) {
-            System.out.print(p.getType() + " " + p.getId().getName() + ", ");
+            temp += p.getType() + " " + p.getId().getName() + ", ";
         }
-        System.out.println("as input");
+        temp += "as input";
+        return temp;
     }
 
-    public void autoDocumentLoopsFor(ArrayList<ForStmt> loops, String loop) {
-        System.out.print("some main actions of the method is done ");
+    public String autoDocumentLoopsFor(ArrayList<ForStmt> loops, String loop) {
+        String temp = "some main actions of the method is done ";
         for (ForStmt l : loops) {
             if (l.getInit().toString().contains(loop)) {
-                System.out.println("for " + l.getCompare().toString().split("<")[1] + " iteration");
+                temp += "for " + l.getCompare().toString().split("<")[1] + " iteration";
             }
         }
+        return temp;
     }
 
-    public void autoDocumentLoopsWhile(ArrayList<WhileStmt> loops, String loop) {
-        System.out.print("some main actions of the method is done ");
+    public String autoDocumentLoopsWhile(ArrayList<WhileStmt> loops, String loop) {
+        String temp = "some main actions of the method is done ";
         for (WhileStmt l : loops) {
             if (l.getCondition().toString().contains(loop)) {
-                System.out.println("while " + l.getCondition().toString());
+                temp += "while " + l.getCondition().toString();
             }
         }
+        return temp;
     }
 
-    public void autoDocumentLoopsDo(ArrayList<DoStmt> loops, String loop) {
-        System.out.print("some main actions of the method is done ");
+    public String autoDocumentLoopsDo(ArrayList<DoStmt> loops, String loop) {
+        String temp = "some main actions of the method is done ";
         for (DoStmt l : loops) {
             if (l.getCondition().toString().contains(loop)) {
-                System.out.println("while " + l.getCondition().toString());
+                temp += "while " + l.getCondition().toString();
             }
         }
+        return temp;
     }
 
-    public void autoDocumentAssignment(ArrayList<AssignExpr> assignExprs, String assign) {
+    public String autoDocumentAssignment(ArrayList<AssignExpr> assignExprs, String assign) {
+        String temp = "";
         for (AssignExpr s : assignExprs) {
             if (s.getValue().toString().contains(assign)) {
-                System.out.println(" Assign equation " + s.getValue() + " to " + s.getTarget());
+                temp += " Assign equation " + s.getValue() + " to " + s.getTarget();
             }
         }
+        return temp;
     }
 
-    public void autoDocumentMethodInvocation(ArrayList<MethodCallExpr> methodCallExprs, String methodInvocation) {
+    public String autoDocumentMethodInvocation(ArrayList<MethodCallExpr> methodCallExprs, String methodInvocation) {
+        String temp = "";
+        HashMap<String, Integer> t = new HashMap<>();
         for (MethodCallExpr m : methodCallExprs) {
             if (m.toString().contains(methodInvocation)) {
-                System.out.println("This method call " + m.toString());
-            }
-        }
-    }
-
-    public void autoDocumentIfCondition(ArrayList<IfStmt> ifConditions, String ifCondition) {
-        for (IfStmt i : ifConditions) {
-            if (i.getCondition().toString().contains(ifCondition)) {
-                System.out.println("decides based on " + i.getCondition() + " if it is true then " + i.getThenStmt());
-                if (i.getElseStmt() != null) {
-                    System.out.println("otherwise " + i.getElseStmt());
+                if (t.containsKey(m.getName())) {
+                    t.put(m.getName(), t.get(m.getName()) + 1);
+                } else {
+                    t.put(m.getName(), 1);
                 }
             }
         }
+        TreeSet<String> moreThanOne = new TreeSet<>();
+        boolean hasMore = false;
+        boolean hasOne = false;
+        TreeSet<String> one = new TreeSet<>();
+        for (String s : t.keySet()) {
+            if (t.get(s) != 1) {
+                hasMore = true;
+                moreThanOne.add(s);
+            }
+            if (t.get(s) == 1) {
+                one.add(s);
+                hasOne = true;
+            }
+        }
+        String output = "";
+        if (hasMore == true) {
+            output = "This method calls " + moreThanOne + " functions with different parameters, several times \n";
+        }
+        if (hasOne == true) {
+            output += "This method calls " + one;
+        }
+        return output;
     }
 
-    public void autoDocumentSwitch(ArrayList<SwitchStmt> expSwitch, String switchCase) {
+    public String autoDocumentIfCondition(ArrayList<IfStmt> ifConditions, String ifCondition) {
+        String temp = "";
+        for (IfStmt i : ifConditions) {
+            if (i.getCondition().toString().contains(ifCondition)) {
+                temp += "Based on " + "(" + i.getCondition() + ")" + " if it is true, performs below steps:\n" + i.getThenStmt().toStringWithoutComments();
+                if (i.getElseStmt() != null) {
+                    temp += "otherwise:\n " + i.getElseStmt();
+                }
+            }
+        }
+        return temp;
+    }
+
+    public String autoDocumentSwitch(ArrayList<SwitchStmt> expSwitch, String switchCase) {
+        String temp = "";
         for (SwitchStmt s : expSwitch) {
             if (s.getSelector().toString().contains(switchCase)) {
-                System.out.println("Decides different actions based on the " + s.getSelector());
+                temp += "Decides different actions based on the " + s.getSelector();
             }
         }
+        return temp;
     }
 
-    public void autoDocumentCatch(ArrayList<CatchClause> catchClauses, String catchClause) {
+    public String autoDocumentCatch(ArrayList<CatchClause> catchClauses, String catchClause) {
+        String temp = "";
         for (CatchClause c : catchClauses) {
             if (c.getExcept().toString().contains(catchClause) || c.getCatchBlock().toString().contains(catchClause)) {
-                System.out.println("This method handles error by using exception mechanisms");
+                temp += "This method handles error by using exception mechanisms";
             }
         }
+        return temp;
     }
 
     /**
