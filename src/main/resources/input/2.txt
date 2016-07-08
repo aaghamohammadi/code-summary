@@ -1,0 +1,17 @@
+    public void getLongtimeTask(double strat, double finish) {
+        try {
+            double temp = finish - strat;
+            int speed = (int) temp / 10;
+            switch (speed) {
+                case 0:
+                    System.out.println("to slow!");
+                    break;
+                case 1:
+                    System.out.println("Not bad!");
+                    break;
+            }
+            return temp;
+        } catch (Exception e) {
+            e.setStackTrace();
+        }
+    }
