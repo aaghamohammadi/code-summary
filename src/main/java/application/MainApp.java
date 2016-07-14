@@ -11,12 +11,15 @@ import javafx.stage.Stage;
 import model.MethodModel;
 import view.MethodOverviewController;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class MainApp extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ObservableList<MethodModel> method = FXCollections.observableArrayList();
+    private List<File> files;
 
     public static void main(String[] args) {
         launch(args);
@@ -30,7 +33,6 @@ public class MainApp extends Application {
         initRootLayout();
         showMethodOverview();
 
-        Main.start(this);
 
 
     }
@@ -71,5 +73,13 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setInput(List<File> files) {
+        this.files = files;
+    }
+
+    public List<File> getFiles() {
+        return files;
     }
 }
