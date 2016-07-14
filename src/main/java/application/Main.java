@@ -113,11 +113,14 @@ public class Main {
                             break;
                     }
                 });
+                String template = "";
                 for (String s : templates) {
                     if (s != null && !s.equals("")) {
                         System.out.println(s);
+                        template = template + s + "\n";
                     }
                 }
+                m.setTemplateMethod(template);
             }
             writer.close();
 

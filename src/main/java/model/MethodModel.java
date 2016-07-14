@@ -45,6 +45,8 @@ public class MethodModel {
     private HashMap<String, Double> dictionary = new HashMap<String, Double>();
     private HashMap<String, String> typeWord = new HashMap<>();
 
+    private String template;
+
     public void setMethodName(String methodName) {
         this.methodName = methodName;
         methodNameProperty = new SimpleStringProperty(methodName);
@@ -250,5 +252,13 @@ public class MethodModel {
 
     public ArrayList<CatchClause> getExpCatch() {
         return expCatch;
+    }
+
+    public void setTemplateMethod(String template) {
+        this.template = template;
+    }
+
+    public String getTemplate() {
+        return template;
     }
 }
