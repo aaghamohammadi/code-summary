@@ -1,6 +1,0 @@
-public int calculateGCD(int a, int b) {
-   if (a > b) {
-      return gcd(b, a - b);
-   } else
-     return b;
-}

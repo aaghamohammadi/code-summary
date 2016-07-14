@@ -2,10 +2,14 @@ import controller.MethodsController;
 import core.generator.AutoDocGenerator;
 import core.score.TFIDF;
 import core.score.Ranked;
+import javafx.fxml.FXML;
 import model.MethodModel;
 import model.ProgramModel;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import static javafx.scene.input.KeyCode.K;
@@ -13,14 +17,16 @@ import static javafx.scene.input.KeyCode.V;
 
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
+    public static void main(String[] args) throws ClassNotFoundException, InterruptedException, FileNotFoundException, UnsupportedEncodingException {
         String path = "src/main/resources/test.java";
+        PrintWriter writer = new PrintWriter("src/main/resources/input/input.txt", "UTF-8");
         try {
             MethodsController methodsController = new MethodsController(path, "AvgFactor");
             String[] docs = new String[ProgramModel.getInstance().getMethodModel().size()];
             for (int i = 0; i < ProgramModel.getInstance().getMethodModel().size(); i++) {
                 MethodModel m = ProgramModel.getInstance().getMethodModel().get(i);
                 docs[i] = m.getMethodBody();
+                writer.println(m.getMethodName() + " " + m.getMethodBody());
             }
             TFIDF tf_idf = new TFIDF(docs);
             Ranked ranked = new Ranked(ProgramModel.getInstance().getMethodModel().size());
@@ -110,7 +116,7 @@ public class Main {
                     }
                 }
             }
-
+            writer.close();
 
         } catch (IOException e) {
             e.printStackTrace();
