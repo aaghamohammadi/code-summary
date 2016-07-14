@@ -1,3 +1,5 @@
+package application;
+
 import controller.MethodsController;
 import core.generator.AutoDocGenerator;
 import core.score.TFIDF;
@@ -17,7 +19,7 @@ import static javafx.scene.input.KeyCode.V;
 
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException, InterruptedException, FileNotFoundException, UnsupportedEncodingException {
+    public static void start(MainApp mainApp) throws ClassNotFoundException, InterruptedException, FileNotFoundException, UnsupportedEncodingException {
         String path = "src/main/resources/test.java";
         PrintWriter writer = new PrintWriter("src/main/resources/input/input.txt", "UTF-8");
         try {
@@ -35,6 +37,7 @@ public class Main {
                 ranked.createMap(i);
                 System.out.println("-------------------------------");
                 System.out.println("Method: " + m.getMethodName());
+                mainApp.setMethod(m);
                 System.out.println();
                 for (String s : m.getDictionary().keySet()) {
 //                    System.out.printf("%s:%-24s\t", m.getTypeWord().get(s), s);
