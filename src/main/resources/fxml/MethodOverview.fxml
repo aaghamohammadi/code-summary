@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -7,6 +8,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MethodOverviewController">
     <children>
@@ -30,6 +32,11 @@
                   <Pane fx:id="drag" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <Label layoutX="220.0" layoutY="92.0" text="Drag project here" />
+                        <CheckBox fx:id="checkBox" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" text="Topic Model">
+                           <font>
+                              <Font name="DejaVu Sans Mono Bold" size="13.0" />
+                           </font>
+                        </CheckBox>
                      </children>
                   </Pane>
                     </children>

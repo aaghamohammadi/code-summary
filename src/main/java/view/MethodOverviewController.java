@@ -2,8 +2,10 @@ package view;
 
 import application.Main;
 import application.MainApp;
+import core.lda.TopicModel;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -27,11 +29,16 @@ public class MethodOverviewController {
     @FXML
     private TextArea summaryMethod;
 
+
+    @FXML
+    private CheckBox checkBox;
+
     @FXML
     private Pane drag;
 
 
     private MainApp mainApp;
+    private boolean selected;
 
 
     public void setMainApp(MainApp mainApp) {
@@ -56,8 +63,27 @@ public class MethodOverviewController {
                 if (db.hasFiles()) {
                     success = true;
                     mainApp.setInput(db.getFiles());
+
                     try {
                         Main.start(mainApp);
+                        if (selected) {
+                            try {
+                                TopicModel.lda();
+                                methodTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                                    try {
+
+                                        summaryMethod.appendText("----------------------------------------" + "\n");
+                                        summaryMethod.appendText("Topics: \n");
+                                        summaryMethod.appendText(TopicModel.showTopic(newValue));
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -66,15 +92,22 @@ public class MethodOverviewController {
                 event.consume();
             }
         });
+
         showMethodDetails(null);
         methodTable.setItems(mainApp.getMethodData());
         setMethodsName();
+        checkBox.setOnAction((ev -> {
+            selected = checkBox.isSelected();
+        }));
+
 
     }
 
     public void setMethodsName() {
         methodNameColumn.setCellValueFactory(cellData -> cellData.getValue().getMethodNameProperty());
         methodTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showMethodDetails(newValue));
+
+
     }
 
     private void showMethodDetails(MethodModel methodModel) {
@@ -85,4 +118,5 @@ public class MethodOverviewController {
 
         }
     }
+
 }

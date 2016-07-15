@@ -31,8 +31,8 @@ public class MethodsController {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException | NullPointerException e) {
+            in.close();
         } finally {
             in.close();
         }

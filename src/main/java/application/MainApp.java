@@ -70,6 +70,7 @@ public class MainApp extends Application {
 
             MethodOverviewController controller = loader.getController();
             controller.setMainApp(this);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

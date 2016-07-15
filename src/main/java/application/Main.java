@@ -2,6 +2,7 @@ package application;
 
 import controller.MethodsController;
 import core.generator.AutoDocGenerator;
+import core.lda.TopicModel;
 import core.score.Ranked;
 import core.score.TFIDF;
 import model.MethodModel;
@@ -125,6 +126,7 @@ public class Main {
         }
         writer.close();
 
+
     }
 
     public static void find_files(File root) {
@@ -132,7 +134,10 @@ public class Main {
         for (File file : files) {
             if (file.isFile()) {
                 try {
-                    MethodsController methodsController = new MethodsController(file.getPath(), "AvgFactor");
+                    if (file.getName().endsWith(".java")) {
+                        MethodsController methodsController = new MethodsController(file.getPath(), "AvgFactor");
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

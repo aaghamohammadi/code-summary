@@ -5,6 +5,7 @@ import cc.mallet.pipe.iterator.CsvIterator;
 import cc.mallet.topics.ParallelTopicModel;
 import cc.mallet.topics.TopicInferencer;
 import cc.mallet.types.*;
+import model.MethodModel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +15,12 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class TopicModel {
-    public static void main(String[] args) throws Exception {
+    private static int numTopics;
+    private static ParallelTopicModel model;
+    private static InstanceList instances;
+    private static Alphabet dataAlphabet;
+
+    public static void lda() throws Exception {
         ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 
         // Pipes: lowercase, tokenize, remove stopwords, map to features
@@ -22,19 +28,19 @@ public class TopicModel {
         pipeList.add(new CharSequence2TokenSequence(Pattern.compile("\\p{L}[\\p{L}\\p{P}]+\\p{L}")));
         pipeList.add(new TokenSequence2FeatureSequence());
 
-        InstanceList instances = new InstanceList(new SerialPipes(pipeList));
+        instances = new InstanceList(new SerialPipes(pipeList));
 
         Reader fileReader = new InputStreamReader(new FileInputStream(new File("src/main/resources/input/input.txt")), "UTF-8");
         instances.addThruPipe(new CsvIterator(fileReader, Pattern.compile("^(\\S*)[\\s,]*(\\S*)[\\s,]*(.*)$"),
                 3, 2, 1)); // data, label, name fields
-        int numTopics = 3;
-        ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
+        numTopics = 3;
+        model = new ParallelTopicModel(numTopics, 1.0, 0.01);
         model.addInstances(instances);
         model.setNumThreads(2);
         model.setNumIterations(100);
         model.estimate();
 
-        Alphabet dataAlphabet = instances.getDataAlphabet();
+        dataAlphabet = instances.getDataAlphabet();
         FeatureSequence tokens = (FeatureSequence) model.getData().get(0).instance.getData();
         LabelSequence topics = model.getData().get(0).topicSequence;
 
@@ -46,7 +52,20 @@ public class TopicModel {
 
         // Estimate the topic distribution of the first instance,
         //  given the current Gibbs state.
-        double[] topicDistribution = model.getTopicProbabilities(0);
+    }
+
+    public static String showTopic(MethodModel methodModel) {
+        Formatter out;
+        String output = "";
+        int id = 0;
+        for (int i = 0; i < instances.size(); i++) {
+            if (instances.get(i).getName().equals(methodModel.getMethodName())) {
+                id = i;
+                break;
+            }
+        }
+        double[] topicDistribution = model.getTopicProbabilities(id);
+
 
         // Get an array of sorted sets of word ID/count pairs
         ArrayList<TreeSet<IDSorter>> topicSortedWords = model.getSortedWords();
@@ -63,7 +82,8 @@ public class TopicModel {
                 out.format("%s (%.0f) ", dataAlphabet.lookupObject(idCountPair.getID()), idCountPair.getWeight());
                 rank++;
             }
-            System.out.println(out);
+            output = output + out.toString() + "\n";
+
         }
 
         // Create a new instance with high probability of topic 0
@@ -84,6 +104,8 @@ public class TopicModel {
         TopicInferencer inferencer = model.getInferencer();
         double[] testProbabilities = inferencer.getSampledDistribution(testing.get(0), 10, 1, 5);
         System.out.println("0\t" + testProbabilities[0]);
+
+        return output;
     }
 }
 
