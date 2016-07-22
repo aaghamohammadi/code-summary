@@ -5,6 +5,7 @@ import cc.mallet.pipe.iterator.CsvIterator;
 import cc.mallet.topics.ParallelTopicModel;
 import cc.mallet.topics.TopicInferencer;
 import cc.mallet.types.*;
+import cc.mallet.util.CommandOption;
 import model.MethodModel;
 
 import java.io.File;
@@ -91,7 +92,7 @@ public class TopicModel {
         Iterator<IDSorter> iterator = topicSortedWords.get(0).iterator();
 
         int rank = 0;
-        while (iterator.hasNext() && rank < 5) {
+        while (iterator.hasNext() && rank < 3) {
             IDSorter idCountPair = iterator.next();
             topicZeroText.append(dataAlphabet.lookupObject(idCountPair.getID()) + " ");
             rank++;

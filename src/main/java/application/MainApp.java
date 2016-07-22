@@ -5,11 +5,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.MethodModel;
 import view.MethodOverviewController;
+import view.PipeChartController;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +34,6 @@ public class MainApp extends Application {
 
         initRootLayout();
         showMethodOverview();
-
 
 
     }
@@ -70,6 +71,24 @@ public class MainApp extends Application {
 
             MethodOverviewController controller = loader.getController();
             controller.setMainApp(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showPipeChart(String s) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("../fxml/PipeChart.fxml"));
+
+            AnchorPane pipeChart = loader.load();
+            rootLayout.setCenter(pipeChart);
+
+            PipeChartController controller = loader.getController();
+
+            controller.showChart(s);
+
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -2,7 +2,6 @@ package application;
 
 import controller.MethodsController;
 import core.generator.AutoDocGenerator;
-import core.lda.TopicModel;
 import core.score.Ranked;
 import core.score.TFIDF;
 import model.MethodModel;

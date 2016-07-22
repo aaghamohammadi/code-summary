@@ -15,9 +15,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import model.MethodModel;
 
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
-
 public class MethodOverviewController {
 
     @FXML
@@ -72,9 +69,7 @@ public class MethodOverviewController {
                                 methodTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                                     try {
 
-                                        summaryMethod.appendText("----------------------------------------" + "\n");
-                                        summaryMethod.appendText("Topics: \n");
-                                        summaryMethod.appendText(TopicModel.showTopic(newValue));
+                                        mainApp.showPipeChart(TopicModel.showTopic(newValue));
 
                                     } catch (Exception e) {
                                         e.printStackTrace();

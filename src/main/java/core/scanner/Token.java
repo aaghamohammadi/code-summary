@@ -1,9 +1,6 @@
 package core.scanner;
 
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Token {
     public Type type;
     public String value;
