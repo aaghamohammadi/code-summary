@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import model.MethodModel;
 import view.MethodOverviewController;
 import view.PipeChartController;
+import view.RootLayoutController;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class MainApp extends Application {
     private BorderPane rootLayout;
     private ObservableList<MethodModel> method = FXCollections.observableArrayList();
     private List<File> files;
+    public static boolean selected;
 
     public static void main(String[] args) {
         launch(args);
@@ -38,6 +40,7 @@ public class MainApp extends Application {
 
     }
 
+
     public void setMethod(MethodModel methodModel) {
         method.add(methodModel);
     }
@@ -46,7 +49,7 @@ public class MainApp extends Application {
         return method;
     }
 
-    private void initRootLayout() {
+    public void initRootLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../fxml/RootLayout.fxml"));
@@ -54,6 +57,9 @@ public class MainApp extends Application {
 
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+
+            RootLayoutController controller = loader.getController();
+            controller.setMainApp(this);
             primaryStage.show();
 
         } catch (IOException e) {
@@ -61,7 +67,7 @@ public class MainApp extends Application {
         }
     }
 
-    private void showMethodOverview() {
+    public void showMethodOverview() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../fxml/MethodOverview.fxml"));

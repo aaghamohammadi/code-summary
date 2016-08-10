@@ -35,7 +35,7 @@ public class MethodOverviewController {
 
 
     private MainApp mainApp;
-    private boolean selected;
+
 
 
     public void setMainApp(MainApp mainApp) {
@@ -63,7 +63,7 @@ public class MethodOverviewController {
 
                     try {
                         Main.start(mainApp);
-                        if (selected) {
+                        if (mainApp.selected) {
                             try {
                                 TopicModel.lda();
                                 methodTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -92,7 +92,7 @@ public class MethodOverviewController {
         methodTable.setItems(mainApp.getMethodData());
         setMethodsName();
         checkBox.setOnAction((ev -> {
-            selected = checkBox.isSelected();
+            mainApp.selected = checkBox.isSelected();
         }));
 
 
