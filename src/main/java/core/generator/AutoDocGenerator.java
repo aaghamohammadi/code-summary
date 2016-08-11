@@ -61,7 +61,7 @@ public class AutoDocGenerator {
         for (Parameter p : parameters) {
             temp += p.getType() + " " + p.getId().getName() + ", ";
         }
-        temp += "as input";
+        temp += "as output";
         return temp;
     }
 

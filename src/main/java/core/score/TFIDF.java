@@ -96,7 +96,8 @@ public class TFIDF {
 
         for (int docIdx = 0; docIdx < docs.length; docIdx++) {
             for (int wordIdx = 0; wordIdx < numOfWords; wordIdx++) {
-                tfIdfMatrix[docIdx][wordIdx] = tfMatrix[docIdx][wordIdx] * idfVector[wordIdx];
+                // tfIdfMatrix[docIdx][wordIdx] = tfMatrix[docIdx][wordIdx] * idfVector[wordIdx];
+                tfIdfMatrix[docIdx][wordIdx] = idfVector[wordIdx];
             }
         }
         changeWeight(mapWordToIdx);

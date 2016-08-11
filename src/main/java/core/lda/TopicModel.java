@@ -31,7 +31,7 @@ public class TopicModel {
 
         instances = new InstanceList(new SerialPipes(pipeList));
 
-        Reader fileReader = new InputStreamReader(new FileInputStream(new File("src/main/resources/input/input.txt")), "UTF-8");
+        Reader fileReader = new InputStreamReader(new FileInputStream(new File("src/main/resources/output/output.txt")), "UTF-8");
         instances.addThruPipe(new CsvIterator(fileReader, Pattern.compile("^(\\S*)[\\s,]*(\\S*)[\\s,]*(.*)$"),
                 3, 2, 1)); // data, label, name fields
         numTopics = 3;
