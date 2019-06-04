@@ -4,8 +4,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.*;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import java.util.List;
 public class MethodModel {
     private String methodName = "";
 
-    private StringProperty methodNameProperty;
     private String methodBody = "";
 
     private String returnValue = "";
@@ -49,12 +47,8 @@ public class MethodModel {
 
     public void setMethodName(String methodName) {
         this.methodName = methodName;
-        methodNameProperty = new SimpleStringProperty(methodName);
     }
 
-    public StringProperty getMethodNameProperty() {
-        return methodNameProperty;
-    }
 
     public void setExpReturnValue(ReturnStmt returnValue) {
         this.expReturnValue.add(returnValue);

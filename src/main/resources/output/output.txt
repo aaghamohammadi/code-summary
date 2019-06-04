@@ -1,4 +1,0 @@
--------------------------------
-Method: getValue
-This Method get Value
-This method finally returns [value]

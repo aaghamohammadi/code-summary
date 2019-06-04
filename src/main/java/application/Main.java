@@ -11,25 +11,22 @@ import java.io.*;
 
 public class Main {
 
-    public static void start(MainApp mainApp) throws ClassNotFoundException, InterruptedException, FileNotFoundException, UnsupportedEncodingException {
-        String path = "src/main/resources/test.java";
+
+    public static void main(String[] args) throws ClassNotFoundException, InterruptedException, FileNotFoundException, UnsupportedEncodingException {
+        String path = "src/main/resources/input.java";
 
         PrintWriter writer = new PrintWriter("src/main/resources/output/output.txt", "UTF-8");
-        if (mainApp.getFiles().get(0).getName().endsWith(".java")) {
-            try {
-                MethodsController methodsController = new MethodsController(mainApp.getFiles().get(0).getPath(), "AvgFactor");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            find_files(mainApp.getFiles().get(0));
+
+        try {
+            MethodsController methodsController = new MethodsController(path, "AvgFactor");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         String[] docs = new String[ProgramModel.getInstance().getMethodModel().size()];
         for (int i = 0; i < ProgramModel.getInstance().getMethodModel().size(); i++) {
             MethodModel m = ProgramModel.getInstance().getMethodModel().get(i);
             docs[i] = m.getMethodBody();
-//            writer.println(m.getMethodName() + " " + m.getMethodBody());
         }
         TFIDF tf_idf = new TFIDF(docs);
         Ranked ranked = new Ranked(ProgramModel.getInstance().getMethodModel().size());
@@ -38,11 +35,8 @@ public class Main {
             ranked.createMap(i);
             writer.println("-------------------------------");
             writer.println("Method: " + m.getMethodName());
-            mainApp.setMethod(m);
             System.out.println();
             for (String s : m.getDictionary().keySet()) {
-//                    System.out.printf("%s:%-24s\t", m.getTypeWord().get(s), s);
-//                    System.out.printf("%-12f\n", tf_idf.getTF_IDFMatrix()[i][tf_idf.getWords().get(s)]);
                 ranked.setTopWord(i, s, tf_idf.getTF_IDFMatrix()[i][tf_idf.getWords().get(s)]);
             }
             // Generate Template Document
@@ -146,7 +140,5 @@ public class Main {
             }
         }
     }
-
-
 }
 
